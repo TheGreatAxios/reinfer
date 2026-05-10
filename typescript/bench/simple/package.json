@@ -1,0 +1,13 @@
+{
+  "name": "@inferred-validation/bench-simple",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "bench": "bun run src/index.ts",
+    "report": "bun run src/report.ts"
+  },
+  "dependencies": {
+    "@inferred-validation/core": "workspace:*",
+    "zod": "^4.4.3"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "name": "@inferred-validation/ai-sdk",
+  "version": "0.0.1",
+  "description": "Vercel AI SDK proxy with automatic output validation and retry",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsdown",
+    "dev": "bun --watch run build",
+    "test": "bun test",
+    "test:watch": "bun test --watch"
+  },
+  "dependencies": {
+    "@inferred-validation/core": "workspace:*"
+  },
+  "peerDependencies": {
+    "ai": "^6.0.0"
+  },
+  "devDependencies": {
+    "ai": "^6.0.0",
+    "tsdown": "^0.22.0"
+  }
+}

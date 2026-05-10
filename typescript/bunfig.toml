@@ -1,0 +1,7 @@
+[install]
+registry = "https://registry.npmjs.org"
+strict = true
+
+[test]
+coverage = true
+coverageThreshold = 50

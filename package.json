@@ -1,0 +1,5 @@
+{
+  "name": "inferred-validation-monorepo",
+  "private": true,
+  "workspaces": ["ts/*"]
+}

@@ -1,0 +1,38 @@
+# @inferred-validation/core
+
+Shared validation engine for inferred-validation. Zero runtime dependencies.
+
+## Install
+
+```bash
+bun add @inferred-validation/core
+```
+
+## Usage
+
+```typescript
+import { Schema, validate, autoFixJson, validJson, requiredFields } from '@inferred-validation/core'
+
+// Create a schema with checks
+const schema = new Schema({
+  name: 'person',
+  checks: [
+    validJson(),
+    requiredFields(['name', 'age']),
+  ],
+})
+
+// Validate against a schema
+const result = await validate('{"name": "Alice", "age": 30}', schema)
+console.log(result.passed) // true
+console.log(result.violations) // []
+
+// Auto-fix malformed JSON
+const { fixed, fixes } = autoFixJson('{"name": "Alice",}') 
+console.log(fixed) // '{"name": "Alice"}'
+console.log(fixes) // ['removed_trailing_commas']
+```
+
+## API
+
+See [AGENTS.md](./AGENTS.md) for detailed module documentation.
