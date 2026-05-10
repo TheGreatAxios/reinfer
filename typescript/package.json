@@ -19,6 +19,7 @@
     "bench:retry": "bun run --env-file .env --filter reinfer-bench-complex retry-bench"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.31.0",
     "zod": "4.4.3"
   }
 }
