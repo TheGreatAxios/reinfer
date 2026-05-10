@@ -9,7 +9,9 @@ LLMs produce malformed structured output **15–30%** of the time. Self-critique
 const result = await generateObject({ model, schema, prompt })
 
 // After — one line:
-const { generateObject } = validated({ maxAttempts: 3 })
+import { reinfer } from 'reinfer-ai-sdk'
+
+const { generateObject } = reinfer({ maxAttempts: 3 })
 const result = await generateObject({ model, schema, prompt })
 ```
 
@@ -21,15 +23,14 @@ The proxy handles schema validation, auto-fix of malformed JSON, retry with diag
 reinfer/
 ├── AGENTS.md                   ← Full architecture, edge case maps, roadmap
 ├── README.md
-├── Provider Matrix — ...md     ← Per-provider edge case research
-├── SDK Deep Spec — ...md       ← Streaming, tool calls, every weird edge
+├── concepts/                   ← Foundational design docs
 │
 ├── typescript/                 ← TS monorepo (Bun + tsdown)
-│   ├── packages/core/          ← @reinfer/core (zero deps)
-│   ├── packages/ai-sdk/        ← @reinfer/ai-sdk
-│   └── bench/simple/           ← OpenRouter benchmarks (91% pass rate)
+│   ├── packages/core/          ← reinfer (zero deps, core engine)
+│   ├── packages/ai-sdk/        ← reinfer-ai-sdk (Vercel AI SDK proxy)
+│   └── bench/                  ← Benchmark runners
 │
-└── python/                     ← Python monorepo (coming soon)
+└── python/                     ← Python (coming soon)
 ```
 
 ## Quick Start

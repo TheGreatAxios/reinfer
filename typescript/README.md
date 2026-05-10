@@ -13,10 +13,9 @@ bun run build        # tsdown → ESM bundles
 ## Usage
 
 ```typescript
-import { validated } from '@reinfer/ai-sdk'
-import { openai } from '@ai-sdk/openai'
+import { reinfer } from 'reinfer-ai-sdk'
 
-const { generateObject } = validated({
+const { generateObject } = reinfer({
   maxAttempts: 3,
   onValidationFailure: (f) => console.log('Failed:', f.violations),
 })
@@ -33,8 +32,8 @@ const result = await generateObject({
 
 | Package | Description |
 |---------|-------------|
-| `@reinfer/core` | Validation engine, auto-fix, schemas, retry builders (zero deps) |
-| `@reinfer/ai-sdk` | Vercel AI SDK proxy — wraps `generateText()`, `generateObject()` |
+| `reinfer` | Validation engine, auto-fix, schemas, retry builders (zero deps) |
+| `reinfer-ai-sdk` | Vercel AI SDK proxy — wraps `generateText()`, `generateObject()` |
 
 ## Benchmarks
 

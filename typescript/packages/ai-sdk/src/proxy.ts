@@ -294,10 +294,10 @@ async function wrappedGenerateObject(
  *
  * Usage:
  * ```ts
- * import { validated } from 'reinfer-ai-sdk'
+ * import { reinfer } from 'reinfer-ai-sdk'
  * import { openai } from '@ai-sdk/openai'
  *
- * const { generateText, generateObject } = validated({ maxAttempts: 3 })
+ * const { generateText, generateObject } = reinfer({ maxAttempts: 3 })
  *
  * // Same API as 'ai' SDK, with automatic validation + retry
  * const result = await generateText({
@@ -306,7 +306,7 @@ async function wrappedGenerateObject(
  * })
  * ```
  */
-export function validated(options?: ValidatorOptions) {
+export function reinfer(options?: ValidatorOptions) {
   const config = resolveConfig(options)
   const schemas = options?.schemas
 

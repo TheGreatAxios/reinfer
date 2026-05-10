@@ -1,2 +1,2 @@
-export { validated } from './proxy'
+export { reinfer } from './proxy'
 export type { ValidatorOptions, Schema, ValidationResult } from 'reinfer'

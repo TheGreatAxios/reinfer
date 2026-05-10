@@ -1,11 +1,11 @@
-# @reinfer/ai-sdk
+# reinfer-ai-sdk
 
 Vercel AI SDK proxy. Wraps `generateText()` and `generateObject()` with automatic output validation, auto-fix, and retry.
 
 ## Architecture
 
 ```
-validated({ maxAttempts, schemas, onValidationFailure })
+reinfer({ maxAttempts, schemas, onValidationFailure })
   │
   ├── generateText(params)
   │   ├── No schema detected → passthrough (zero overhead)
@@ -24,7 +24,7 @@ validated({ maxAttempts, schemas, onValidationFailure })
 
 | File | Exports |
 |------|---------|
-| `proxy.ts` | `validated()` — the main entry point |
+| `proxy.ts` | `reinfer()` — the main entry point |
 | `signals.ts` | `hasSchema()`, `detectSchema()`, `getFinishReason()`, `mapFinishReason()` |
 | `extractor.ts` | `extractText()`, `extractRawFromError()` |
 | `errors.ts` | `classifyError()`, `isValidationError()` |

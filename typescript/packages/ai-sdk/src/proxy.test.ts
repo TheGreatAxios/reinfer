@@ -3,7 +3,7 @@ import { MockLanguageModelV3 } from 'ai/test'
 import { z } from 'zod'
 
 import { Schema } from 'reinfer'
-import { validated } from './proxy'
+import { reinfer } from './proxy'
 
 const defaultUsage = {
   inputTokens: { total: 10, noCache: 10, cacheRead: undefined, cacheWrite: undefined },
@@ -73,7 +73,7 @@ function sequentialModel(results: Array<{ text: string; finishReason?: string }>
 describe('passthrough', () => {
   it('returns raw result when validation is disabled', async () => {
     const model = mockModel('plain text')
-    const { generateText } = validated({ autoDetect: false })
+    const { generateText } = reinfer({ autoDetect: false })
 
     const result = await generateText({
       model,
@@ -96,7 +96,7 @@ describe('generateObject + Zod schema', () => {
 
   it('passes on first try with valid output', async () => {
     const model = mockModel('{"name":"Alice","age":30}')
-    const { generateObject } = validated({ maxAttempts: 2 })
+    const { generateObject } = reinfer({ maxAttempts: 2 })
 
     const result = await generateObject({
       model,
@@ -114,7 +114,7 @@ describe('generateObject + Zod schema', () => {
       { text: '{"name":"Alice","age":"thirty"}' },
       { text: '{"name":"Alice","age":30}' },
     ])
-    const { generateObject } = validated({ maxAttempts: 2 })
+    const { generateObject } = reinfer({ maxAttempts: 2 })
 
     const result = await generateObject({
       model,
@@ -131,7 +131,7 @@ describe('generateObject + Zod schema', () => {
       { text: '{"name":"Alice",}' },
       { text: '{"name":"Alice","age":30}' },
     ])
-    const { generateObject } = validated({ maxAttempts: 2 })
+    const { generateObject } = reinfer({ maxAttempts: 2 })
 
     const result = await generateObject({
       model,
@@ -146,7 +146,7 @@ describe('generateObject + Zod schema', () => {
 
   it('auto-fixes trailing commas without retry', async () => {
     const model = mockModel('{"name":"Alice","age":30,}')
-    const { generateObject } = validated({ maxAttempts: 2 })
+    const { generateObject } = reinfer({ maxAttempts: 2 })
 
     const result = await generateObject({
       model,
@@ -164,7 +164,7 @@ describe('generateObject + Zod schema', () => {
       { text: '{"name":"Alice","age":"bad"}' },
       { text: '{"name":"Bob","age":"also-bad"}' },
     ])
-    const { generateObject } = validated({ maxAttempts: 2 })
+    const { generateObject } = reinfer({ maxAttempts: 2 })
 
     await expect(
       generateObject({
@@ -188,7 +188,7 @@ describe('generateText + custom validation', () => {
       { text: '{"name":"Alice"', finishReason: 'length' },
       { text: '{"name":"Alice","age":30}', finishReason: 'stop' },
     ])
-    const { generateText } = validated({
+    const { generateText } = reinfer({
       schemas: { default: jsonSchema },
       maxAttempts: 2,
     })

@@ -1,4 +1,4 @@
-# @reinfer/core
+# reinfer
 
 Zero-dependency validation engine. No runtime deps.
 

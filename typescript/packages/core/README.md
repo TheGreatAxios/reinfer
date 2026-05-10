@@ -1,17 +1,17 @@
-# @reinfer/core
+# reinfer
 
 Shared validation engine for reinfer. Zero runtime dependencies.
 
 ## Install
 
 ```bash
-bun add @reinfer/core
+bun add reinfer
 ```
 
 ## Usage
 
 ```typescript
-import { Schema, validate, autoFixJson, validJson, requiredFields } from '@reinfer/core'
+import { Schema, validate, autoFixJson, validJson, requiredFields } from 'reinfer'
 
 // Create a schema with checks
 const schema = new Schema({
