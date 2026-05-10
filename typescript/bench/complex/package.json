@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "bench": "bun run src/index.ts",
-    "report": "bun run src/report.ts"
+    "report": "bun run src/report.ts",
+    "retry-bench": "bun run src/retry-mode.ts"
   },
   "dependencies": {
     "@inferred-validation/core": "workspace:*",

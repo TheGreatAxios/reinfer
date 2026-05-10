@@ -1,9 +1,10 @@
-import { writeFileSync, appendFileSync, mkdirSync, existsSync, readFileSync } from 'fs'
+import { writeFileSync, appendFileSync, mkdirSync, existsSync } from 'fs'
 import { join } from 'path'
 
 /**
  * Every single attempt — whether raw API call or validation retry — is logged here.
  * One JSON line per attempt, append-only. Lossless.
+ * Files are dated so you can track changes over time.
  */
 
 export interface AttemptLog {
@@ -38,7 +39,6 @@ export interface AttemptLog {
 }
 
 export interface ScenarioResult {
-  /** Aggregated results for one scenario run */
   scenario: string
   model: string
   passed: boolean
@@ -47,33 +47,115 @@ export interface ScenarioResult {
   attempts: AttemptLog[]
 }
 
+// ── Stable run ID for this execution ──
+
+const RUN_ID = new Date().toISOString().replace(/:/g, '-').split('.')[0]
 const RESULTS_DIR = join(import.meta.dir, '..', 'results')
 
-export function ensureResultsDir(): void {
-  if (!existsSync(RESULTS_DIR)) {
-    mkdirSync(RESULTS_DIR, { recursive: true })
-  }
+function ensureDir(): void {
+  if (!existsSync(RESULTS_DIR)) mkdirSync(RESULTS_DIR, { recursive: true })
 }
 
-/** Append one attempt to the per-scenario log file. */
+/** Dated filename for a scenario's raw data. */
+function dataFile(scenario: string): string {
+  return join(RESULTS_DIR, `${scenario}-${RUN_ID}.jsonl`)
+}
+
+/** Dated filename for a scenario's human-readable report. */
+function mdFile(scenario: string): string {
+  return join(RESULTS_DIR, `${scenario}-${RUN_ID}.md`)
+}
+
+/** Dated filename for the full run summary. */
+function summaryFile(): string {
+  return join(RESULTS_DIR, `summary-${RUN_ID}.json`)
+}
+
+/** Dated filename for the overall report. */
+function reportFile(): string {
+  return join(RESULTS_DIR, `report-${RUN_ID}.md`)
+}
+
+// ── Logging ──
+
+/** Append one attempt to the dated per-scenario JSONL file. */
 export function logAttempt(attempt: AttemptLog): void {
-  ensureResultsDir()
-  const filePath = join(RESULTS_DIR, `${attempt.scenario}.jsonl`)
-  appendFileSync(filePath, JSON.stringify(attempt) + '\n', 'utf-8')
+  ensureDir()
+  appendFileSync(dataFile(attempt.scenario), JSON.stringify(attempt) + '\n', 'utf-8')
 }
 
-/** Write a summary file with aggregated results. */
+/** Write summary JSON and the human-readable .md report. */
 export function writeSummary(results: ScenarioResult[]): void {
-  ensureResultsDir()
-  const filePath = join(RESULTS_DIR, 'summary.json')
-  writeFileSync(filePath, JSON.stringify(results, null, 2), 'utf-8')
-  console.log(`\n📊 Summary written to ${filePath}`)
+  ensureDir()
 
-  // Also print a table
+  // Write JSON summary
+  const jsonPath = summaryFile()
+  writeFileSync(jsonPath, JSON.stringify(results, null, 2), 'utf-8')
+  console.log(`\n📊 Summary written to ${jsonPath}`)
+
+  // Write .md report
+  const mdPath = reportFile()
   const passRate = results.filter(r => r.passed).length / results.length * 100
-  const avgLatency = results.reduce((s, r) => s + r.totalLatencyMs, 0) / results.length
+  const avgLatency = Math.round(results.reduce((s, r) => s + r.totalLatencyMs, 0) / results.length)
   const totalRetries = results.reduce((s, r) => s + r.totalAttempts - 1, 0)
 
+  const lines: string[] = []
+  lines.push(`# Benchmark Report — ${RUN_ID}`)
+  lines.push(``)
+  lines.push(`| Metric | Value |`)
+  lines.push(`|--------|-------|`)
+  lines.push(`| Scenarios | ${results.length} |`)
+  lines.push(`| Pass rate | ${passRate.toFixed(1)}% |`)
+  lines.push(`| Avg latency | ${avgLatency}ms |`)
+  lines.push(`| Total retries | ${totalRetries} |`)
+  lines.push(`| Run ID | ${RUN_ID} |`)
+  lines.push(``)
+  lines.push(`## Per-Scenario`)
+  lines.push(``)
+  lines.push(`| Scenario | Result | Latency | Retries | Auto-fixes |`)
+  lines.push(`|----------|--------|---------|---------|------------|`)
+
+  const sorted = [...results].sort((a, b) => Number(a.passed) - Number(b.passed))
+  for (const r of sorted) {
+    const icon = r.passed ? '✅' : '❌'
+    const retries = r.totalAttempts - 1
+    const autoFixCount = r.attempts.filter(a => a.autoFixes.length > 0).length
+    lines.push(`| ${r.scenario} | ${icon} | ${r.totalLatencyMs}ms | ${retries} | ${autoFixCount} |`)
+  }
+  lines.push(``)
+
+  // Write per-scenario .md files too
+  for (const r of results) {
+    const scenarioLines: string[] = []
+    scenarioLines.push(`# ${r.scenario} — ${r.passed ? '✅ PASS' : '❌ FAIL'}`)
+    scenarioLines.push(``)
+    scenarioLines.push(`Run: ${RUN_ID}  |  Model: ${r.model}  |  Total: ${r.totalLatencyMs}ms  |  Attempts: ${r.totalAttempts}`)
+    scenarioLines.push(``)
+    scenarioLines.push(`## Attempts`)
+    scenarioLines.push(``)
+    for (const a of r.attempts) {
+      scenarioLines.push(`### Attempt ${a.attemptNumber} (${a.latencyMs}ms)`)
+      scenarioLines.push(``)
+      scenarioLines.push(`- **Passed**: ${a.schemaPassed ? '✅' : '❌'}`)
+      scenarioLines.push(`- **Truncated**: ${a.truncated ? '⚠️' : 'No'}`)
+      scenarioLines.push(`- **Auto-fixes**: ${a.autoFixes.length > 0 ? a.autoFixes.join(', ') : 'None'}`)
+      if (a.violations.length > 0) {
+        scenarioLines.push(`- **Violations**:`)
+        for (const v of a.violations) scenarioLines.push(`  - ${v}`)
+      }
+      scenarioLines.push(``)
+      scenarioLines.push('```json')
+      scenarioLines.push(a.rawResponse.slice(0, 500))
+      scenarioLines.push('```')
+      scenarioLines.push(``)
+    }
+    writeFileSync(mdFile(r.scenario), scenarioLines.join('\n'), 'utf-8')
+  }
+
+  writeFileSync(mdPath, lines.join('\n'), 'utf-8')
+  console.log(`📝 Report written to ${mdPath}`)
+
+  // Also print the existing console table
   console.log('\n' + '─'.repeat(80))
   console.log('  BENCHMARK RESULTS'.padEnd(40))
   console.log('─'.repeat(80))
@@ -85,9 +167,6 @@ export function writeSummary(results: ScenarioResult[]): void {
   console.log()
   console.log('  Per-scenario breakdown:')
   console.log()
-
-  // Sort by pass/fail for readability
-  const sorted = [...results].sort((a, b) => Number(a.passed) - Number(b.passed))
   for (const r of sorted) {
     const icon = r.passed ? '✅' : '❌'
     const retries = r.totalAttempts - 1
@@ -95,15 +174,4 @@ export function writeSummary(results: ScenarioResult[]): void {
     console.log(`  ${icon} ${r.scenario.padEnd(30)} ${r.totalLatencyMs.toString().padStart(6)}ms${retryStr}`)
   }
   console.log()
-}
-
-/** Read existing results for a scenario. */
-export function readAttempts(scenario: string): AttemptLog[] {
-  const filePath = join(RESULTS_DIR, `${scenario}.jsonl`)
-  if (!existsSync(filePath)) return []
-  return readFileSync(filePath, 'utf-8')
-    .trim()
-    .split('\n')
-    .filter(Boolean)
-    .map(line => JSON.parse(line))
 }

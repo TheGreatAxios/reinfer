@@ -15,7 +15,8 @@
     "bench:simple": "bun run --env-file .env --filter @inferred-validation/bench-simple bench",
     "bench:complex": "bun run --env-file .env --filter @inferred-validation/bench-complex bench",
     "bench:report": "bun run --filter @inferred-validation/bench-simple report",
-    "bench:report-complex": "bun run --filter @inferred-validation/bench-complex report"
+    "bench:report-complex": "bun run --filter @inferred-validation/bench-complex report",
+    "bench:retry": "bun run --env-file .env --filter @inferred-validation/bench-complex retry-bench"
   },
   "devDependencies": {
     "zod": "4.4.3"
