@@ -3,5 +3,4 @@
 node_modules
 dist
 concepts
-.pi/agent/sandbox.json
-.pi/prompts
+.pi
