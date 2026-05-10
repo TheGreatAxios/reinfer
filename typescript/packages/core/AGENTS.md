@@ -1,4 +1,4 @@
-# @inferred-validation/core
+# @reinfer/core
 
 Zero-dependency validation engine. No runtime deps.
 

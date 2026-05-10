@@ -1,5 +1,5 @@
 {
-  "name": "@inferred-validation/ai-sdk",
+  "name": "reinfer-ai-sdk",
   "version": "0.0.1",
   "description": "Vercel AI SDK proxy with automatic output validation and retry",
   "type": "module",
@@ -19,7 +19,7 @@
     "test:watch": "bun test --watch"
   },
   "dependencies": {
-    "@inferred-validation/core": "workspace:*"
+    "reinfer": "workspace:*"
   },
   "peerDependencies": {
     "ai": "^6.0.0"

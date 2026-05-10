@@ -1,4 +1,4 @@
-# @inferred-validation/ai-sdk
+# @reinfer/ai-sdk
 
 Vercel AI SDK proxy. Wraps `generateText()` and `generateObject()` with automatic output validation, auto-fix, and retry.
 

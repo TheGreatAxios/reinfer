@@ -1,11 +1,11 @@
-# @inferred-validation/ai-sdk
+# @reinfer/ai-sdk
 
 Vercel AI SDK proxy with automatic output validation, auto-fix, and retry.
 
 ## Install
 
 ```bash
-bun add @inferred-validation/ai-sdk
+bun add @reinfer/ai-sdk
 ```
 
 Requires `ai` as a peer dependency:
@@ -16,7 +16,7 @@ bun add ai
 ## Usage
 
 ```typescript
-import { validated } from '@inferred-validation/ai-sdk'
+import { validated } from '@reinfer/ai-sdk'
 import { z } from 'zod'
 import { openai } from '@ai-sdk/openai'
 

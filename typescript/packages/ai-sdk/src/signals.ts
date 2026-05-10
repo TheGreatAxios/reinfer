@@ -1,4 +1,4 @@
-import type { Schema } from '@inferred-validation/core'
+import type { Schema } from 'reinfer'
 
 /**
  * Detect if the params include a schema/structured output definition.

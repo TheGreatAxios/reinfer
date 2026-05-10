@@ -1,6 +1,6 @@
 # bench-simple
 
-Benchmark runner for inferred-validation. Tests the validation pipeline against real model outputs via OpenRouter.
+Benchmark runner for reinfer. Tests the validation pipeline against real model outputs via OpenRouter.
 
 ## Prerequisites
 

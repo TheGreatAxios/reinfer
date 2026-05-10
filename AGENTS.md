@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Project: inferred-validation
+Project: reinfer
 
 A transparent validation layer for LLM inference clients. One line to wrap. Zero lines to change downstream. Per-SDK packages that know each SDK's edge cases.
 
@@ -9,14 +9,14 @@ A transparent validation layer for LLM inference clients. One line to wrap. Zero
 ## Architecture
 
 ```
-inferred-validator/
+reinfer/
 │
 ├── README.md, AGENTS.md           ← docs
 │
 ├── typescript/                    ← TypeScript monorepo (Bun + tsdown)
 │   └── packages/
-│       ├── core/                  ← @inferred-validation/core (zero deps)
-│       ├── ai-sdk/                ← @inferred-validation/ai-sdk
+│       ├── core/                  ← @reinfer/core (zero deps)
+│       ├── ai-sdk/                ← @reinfer/ai-sdk
 │       ├── openai/                ← (future) covers 10+ OpenAI-compatible providers
 │       ├── anthropic/             ← (future)
 │       ├── gemini/                ← (future)
@@ -71,7 +71,7 @@ client = validated(
 - ✅ AI SDK proxy: handles truncation with higher-budget retry
 - ✅ Tests: 81 passing (45 core + 36 ai-sdk)
 - ✅ Benchmarks: 11 scenarios against OpenRouter (90.9% pass rate)
-- ✅ npm package structure (@inferred-validation/core, @inferred-validation/ai-sdk)
+- ✅ npm package structure (@reinfer/core, @reinfer/ai-sdk)
 
 ### v0.1 — Python Core + OpenAI (PENDING)
 - [ ] Core: Port to Python (`validate()`, `autoFixJson()`, retry builders)
@@ -92,7 +92,7 @@ client = validated(
 - [ ] LangChain proxy: `llm.invoke()`, `with_structured_output()`
 - [ ] Mastra proxy: `agent.generate()` (thin layer over AI SDK proxy)
 - [ ] Custom schema helpers (user-defined checks)
-- [ ] Dashboard / summary CLI: `inferred-validation stats`
+- [ ] Dashboard / summary CLI: `reinfer stats`
 - [ ] Publish to PyPI and npm
 
 ### v0.4 — Streaming + Tool Calls

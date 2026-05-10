@@ -1,5 +1,5 @@
 /**
- * inferred-validation Benchmark Runner
+ * reinfer Benchmark Runner
  *
  * Calls real models via OpenRouter, runs every response through the
  * validation pipeline (auto-fix → schema check → retry), logs everything.
@@ -17,7 +17,7 @@ import { readFileSync } from 'fs'
 import type { AttemptLog, ScenarioResult } from './logger'
 import { SCENARIOS, type Scenario } from './scenarios'
 import { logAttempt, writeSummary } from './logger'
-import { autoFixJson, validate, Schema } from '@inferred-validation/core'
+import { autoFixJson, validate, Schema } from 'reinfer'
 
 // ── Config ──
 
@@ -70,8 +70,8 @@ async function callOpenRouter(
     headers: {
       'Authorization': `Bearer ${API_KEY}`,
       'Content-Type': 'application/json',
-      'HTTP-Referer': 'https://github.com/thegreataxios/inferred-validator',
-      'X-Title': 'inferred-validator-bench',
+      'HTTP-Referer': 'https://github.com/thegreataxios/reinfer',
+      'X-Title': 'reinfer-bench',
     },
     body: JSON.stringify({
       model,
@@ -237,7 +237,7 @@ async function runScenario(scenario: Scenario): Promise<ScenarioResult> {
 
 async function main() {
   console.log('═'.repeat(80))
-  console.log('  inferred-validation Benchmark Runner')
+  console.log('  reinfer Benchmark Runner')
   console.log(`  OpenRouter: ${OPENROUTER_BASE_URL}`)
   console.log(`  Max attempts: ${MAX_ATTEMPTS}`)
   console.log('═'.repeat(80))

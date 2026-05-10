@@ -1,4 +1,4 @@
-import { autoFixJson, extractString } from '@inferred-validation/core'
+import { autoFixJson, extractString } from 'reinfer'
 
 /**
  * Configuration matrix for A/B comparison of validation strategies.

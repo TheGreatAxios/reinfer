@@ -22,7 +22,7 @@ import {
   type ConfigResult,
   type ScenarioRecord,
 } from './logger'
-import { autoFixJson, extractString, Schema, validate } from '@inferred-validation/core'
+import { autoFixJson, extractString, Schema, validate } from 'reinfer'
 
 const API_KEY = process.env.OPENROUTER_API_KEY
 const BASE_URL = process.env.OPENROUTER_BASE_URL ?? 'https://openrouter.ai/api/v1'
@@ -42,8 +42,8 @@ async function callModel(systemPrompt: string, userPrompt: string): Promise<{ te
     headers: {
       'Authorization': `Bearer ${API_KEY}`,
       'Content-Type': 'application/json',
-      'HTTP-Referer': 'https://github.com/thegreataxios/inferred-validator',
-      'X-Title': 'inferred-validator-bench-complex',
+      'HTTP-Referer': 'https://github.com/thegreataxios/reinfer',
+      'X-Title': 'reinfer-bench-complex',
     },
     body: JSON.stringify({
       model: MODEL,

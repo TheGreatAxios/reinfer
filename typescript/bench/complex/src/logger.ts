@@ -1,11 +1,27 @@
-import { writeFileSync, appendFileSync, mkdirSync, existsSync, readFileSync, readdirSync } from 'fs'
+import { writeFileSync, appendFileSync, mkdirSync, existsSync } from 'fs'
 import { join } from 'path'
 
+/** Stable run ID for this execution — all output files use this prefix. */
+const RUN_ID = new Date().toISOString().replace(/:/g, '-').split('.')[0]
 const RESULTS_DIR = join(import.meta.dir, '..', 'results')
 
 export function ensureDir(): void {
   if (!existsSync(RESULTS_DIR)) mkdirSync(RESULTS_DIR, { recursive: true })
 }
+
+function dataFile(name: string): string {
+  return join(RESULTS_DIR, `${name}-${RUN_ID}.jsonl`)
+}
+
+function reportFile(): string {
+  return join(RESULTS_DIR, `report-${RUN_ID}.md`)
+}
+
+function summaryFile(): string {
+  return join(RESULTS_DIR, `summary-${RUN_ID}.json`)
+}
+
+export { RUN_ID }
 
 /** A single model response (raw, pre-validation) */
 export interface ModelResponse {
@@ -39,18 +55,17 @@ export interface ScenarioRecord {
 
 export function logModelResponse(resp: ModelResponse): void {
   ensureDir()
-  appendFileSync(join(RESULTS_DIR, 'raw-responses.jsonl'), JSON.stringify(resp) + '\n')
+  appendFileSync(dataFile('raw-responses'), JSON.stringify(resp) + '\n')
 }
 
 export function logScenarioRecord(record: ScenarioRecord): void {
   ensureDir()
-  appendFileSync(join(RESULTS_DIR, `results.jsonl`), JSON.stringify(record) + '\n')
+  appendFileSync(dataFile('results'), JSON.stringify(record) + '\n')
 }
 
 export function writeSummary(records: ScenarioRecord[]): void {
   ensureDir()
 
-  // Per-config aggregation
   const configStats = new Map<string, { total: number; passed: number; totalRetries: number; totalAutoFix: number; latencyMs: number }>()
   for (const r of records) {
     for (const cr of r.configResults) {
@@ -64,7 +79,9 @@ export function writeSummary(records: ScenarioRecord[]): void {
     }
   }
 
-  const summary = {
+  // Write dated summary and report files
+  const summaryPath = summaryFile()
+  writeFileSync(summaryPath, JSON.stringify({
     generated: new Date().toISOString(),
     totalScenarios: records.length,
     configs: Object.fromEntries(configStats),
@@ -75,10 +92,24 @@ export function writeSummary(records: ScenarioRecord[]): void {
       latencyMs: r.modelResponse.latencyMs,
       configs: Object.fromEntries(r.configResults.map(cr => [cr.configName, { passed: cr.passed, retriesNeeded: cr.retriesNeeded, autoFixes: cr.autoFixApplied.length }])),
     })),
-  }
+  }, null, 2))
 
-  writeFileSync(join(RESULTS_DIR, 'summary.json'), JSON.stringify(summary, null, 2))
-  console.log(`\n📊 Summary: ${records.length} scenarios × ${configStats.size} configs`)
+  // Write .md report
+  const mdPath = reportFile()
+  const lines: string[] = []
+  lines.push(`# Benchmark Report — ${RUN_ID}`)
+  lines.push(``)
+  lines.push(`| Config | Pass | First Try | Auto-Fix | Avg Retries |`)
+  lines.push(`|--------|------|-----------|----------|-------------|`)
+  for (const [name, stats] of configStats) {
+    lines.push(`| ${name} | ${stats.passed}/${stats.total} | ${stats.passed}/${stats.total} | ${stats.totalAutoFix} | ${(stats.totalRetries / stats.total).toFixed(2)} |`)
+  }
+  lines.push(``)
+  writeFileSync(mdPath, lines.join('\n'), 'utf-8')
+
+  console.log(`📊 Summary written to ${summaryPath}`)
+  console.log(`📝 Report written to ${mdPath}`)
+  console.log(`   Total: ${records.length} scenarios × ${configStats.size} configs`)
 }
 
 export function printComparisonTable(records: ScenarioRecord[], configNames: string[]): void {

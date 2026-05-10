@@ -15,7 +15,7 @@
  */
 
 import { SCENARIOS } from './scenarios'
-import { autoFixJson, extractString } from '@inferred-validation/core'
+import { autoFixJson, extractString } from 'reinfer'
 
 const API_KEY = process.env.OPENROUTER_API_KEY
 const BASE_URL = process.env.OPENROUTER_BASE_URL ?? 'https://openrouter.ai/api/v1'
@@ -120,8 +120,8 @@ async function callModel(
       headers: {
         'Authorization': `Bearer ${API_KEY}`,
         'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://github.com/thegreataxios/inferred-validator',
-        'X-Title': 'inferred-validator-retry-bench',
+        'HTTP-Referer': 'https://github.com/thegreataxios/reinfer',
+        'X-Title': 'reinfer-retry-bench',
       },
       body: JSON.stringify({ model: MODEL, messages, temperature: 0.7, max_tokens: 2000 }),
     })

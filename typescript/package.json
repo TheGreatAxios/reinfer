@@ -1,5 +1,5 @@
 {
-  "name": "inferred-validation-typescript",
+  "name": "reinfer-monorepo",
   "private": true,
   "type": "module",
   "workspaces": [
@@ -12,11 +12,11 @@
     "test": "bun run --filter '*' test",
     "test:watch": "bun run --filter '*' test:watch",
     "clean": "rm -rf packages/*/dist",
-    "bench:simple": "bun run --env-file .env --filter @inferred-validation/bench-simple bench",
-    "bench:complex": "bun run --env-file .env --filter @inferred-validation/bench-complex bench",
-    "bench:report": "bun run --filter @inferred-validation/bench-simple report",
-    "bench:report-complex": "bun run --filter @inferred-validation/bench-complex report",
-    "bench:retry": "bun run --env-file .env --filter @inferred-validation/bench-complex retry-bench"
+    "bench:simple": "bun run --env-file .env --filter reinfer-bench-simple bench",
+    "bench:complex": "bun run --env-file .env --filter reinfer-bench-complex bench",
+    "bench:report": "bun run --filter reinfer-bench-simple report",
+    "bench:report-complex": "bun run --filter reinfer-bench-complex report",
+    "bench:retry": "bun run --env-file .env --filter reinfer-bench-complex retry-bench"
   },
   "devDependencies": {
     "zod": "4.4.3"

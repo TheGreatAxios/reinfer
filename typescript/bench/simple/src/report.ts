@@ -81,7 +81,7 @@ function generateReport(results: ScenarioResult[]): void {
 
   console.log()
   console.log('═'.repeat(80))
-  console.log('  inferred-validation Benchmark Report')
+  console.log('  reinfer Benchmark Report')
   console.log(`  Generated: ${new Date().toISOString()}`)
   console.log('═'.repeat(80))
   console.log()

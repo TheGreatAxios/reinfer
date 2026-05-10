@@ -1,17 +1,17 @@
-# @inferred-validation/core
+# @reinfer/core
 
-Shared validation engine for inferred-validation. Zero runtime dependencies.
+Shared validation engine for reinfer. Zero runtime dependencies.
 
 ## Install
 
 ```bash
-bun add @inferred-validation/core
+bun add @reinfer/core
 ```
 
 ## Usage
 
 ```typescript
-import { Schema, validate, autoFixJson, validJson, requiredFields } from '@inferred-validation/core'
+import { Schema, validate, autoFixJson, validJson, requiredFields } from '@reinfer/core'
 
 // Create a schema with checks
 const schema = new Schema({

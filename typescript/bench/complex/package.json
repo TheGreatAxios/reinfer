@@ -1,5 +1,5 @@
 {
-  "name": "@inferred-validation/bench-complex",
+  "name": "reinfer-bench-complex",
   "private": true,
   "type": "module",
   "scripts": {
@@ -8,7 +8,7 @@
     "retry-bench": "bun run src/retry-mode.ts"
   },
   "dependencies": {
-    "@inferred-validation/core": "workspace:*",
+    "reinfer": "workspace:*",
     "zod": "^4.4.3"
   }
 }

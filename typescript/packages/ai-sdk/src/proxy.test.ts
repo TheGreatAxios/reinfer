@@ -2,7 +2,7 @@ import { describe, it, expect } from 'bun:test'
 import { MockLanguageModelV3 } from 'ai/test'
 import { z } from 'zod'
 
-import { Schema } from '@inferred-validation/core'
+import { Schema } from 'reinfer'
 import { validated } from './proxy'
 
 const defaultUsage = {

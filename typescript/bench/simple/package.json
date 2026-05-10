@@ -1,5 +1,5 @@
 {
-  "name": "@inferred-validation/bench-simple",
+  "name": "reinfer-bench-simple",
   "private": true,
   "type": "module",
   "scripts": {
@@ -7,7 +7,7 @@
     "report": "bun run src/report.ts"
   },
   "dependencies": {
-    "@inferred-validation/core": "workspace:*",
+    "reinfer": "workspace:*",
     "zod": "^4.4.3"
   }
 }

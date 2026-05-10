@@ -1,7 +1,7 @@
 {
-  "name": "@inferred-validation/core",
+  "name": "reinfer",
   "version": "0.0.1",
-  "description": "Shared validation engine, schemas, auto-fix, and retry logic for inferred-validation",
+  "description": "Shared validation engine, schemas, auto-fix, and retry logic for reinfer",
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",

@@ -1,6 +1,6 @@
-# TypeScript Monorepo — inferred-validation
+# TypeScript Monorepo — reinfer
 
-TypeScript implementation of the inferred-validation validation layer. Bun monorepo with npm packages targeting the Vercel AI SDK ecosystem.
+TypeScript implementation of the reinfer validation layer. Bun monorepo with npm packages targeting the Vercel AI SDK ecosystem.
 
 ---
 
@@ -9,21 +9,21 @@ TypeScript implementation of the inferred-validation validation layer. Bun monor
 ```
 typescript/
 ├── packages/
-│   ├── core/              @inferred-validation/core
+│   ├── core/              @reinfer/core
 │   │   ├── src/index.ts   Schema, Check, ValidationResult
 │   │   ├── src/validator   validate(), extractString()
 │   │   ├── src/auto-fix    JSON auto-fix pipeline (9 steps)
 │   │   ├── src/retry       retry message builders
 │   │   └── src/schemas/    validJson, requiredFields, fieldTypes, enumValues
 │   │
-│   └── ai-sdk/            @inferred-validation/ai-sdk
+│   └── ai-sdk/            @reinfer/ai-sdk
 │       ├── src/proxy.ts   validated() → { generateText, generateObject }
 │       ├── src/extractor   extractText(), extractRawFromError()
 │       ├── src/signals     hasSchema(), getFinishReason()
 │       └── src/errors      classifyError(), isValidationError()
 │
 ├── bench/
-│   └── simple/            @inferred-validation/bench-simple
+│   └── simple/            @reinfer/bench-simple
 │       └── src/           13 scenarios, OpenRouter, full logging
 │
 ├── package.json           workspaces, scripts
@@ -44,9 +44,9 @@ typescript/
 ## Key Design Decisions
 
 - **ESM-only**: No CJS. Modern Node/Bun only.
-- **Zero-deps core**: `@inferred-validation/core` has zero runtime dependencies.
+- **Zero-deps core**: `@reinfer/core` has zero runtime dependencies.
 - **Source-level dev**: `package.json` points at `./src/index.ts` during development. `publishConfig` swaps to `./dist/` for npm publishing.
-- **Workspace protocol**: Packages reference each other via `"@inferred-validation/core": "workspace:*"`.
+- **Workspace protocol**: Packages reference each other via `"@reinfer/core": "workspace:*"`.
 - **Mock-based testing**: AI SDK proxy tested via `MockLanguageModelV3` from `ai/test` — no real API keys needed.
 
 ## Build Order

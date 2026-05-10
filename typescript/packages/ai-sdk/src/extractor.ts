@@ -1,4 +1,4 @@
-import type { ValidationResult } from '@inferred-validation/core'
+import type { ValidationResult } from 'reinfer'
 
 /**
  * Extract text from a generateText() or generateObject() result.

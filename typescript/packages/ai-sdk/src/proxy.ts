@@ -8,7 +8,7 @@ import {
   buildRetryFeedback,
   buildRetryPrompt,
   extractString,
-} from '@inferred-validation/core'
+} from 'reinfer'
 
 import { hasSchema, detectSchema, getFinishReason } from './signals'
 import { extractText, extractRawFromError } from './extractor'
@@ -294,7 +294,7 @@ async function wrappedGenerateObject(
  *
  * Usage:
  * ```ts
- * import { validated } from '@inferred-validation/ai-sdk'
+ * import { validated } from 'reinfer-ai-sdk'
  * import { openai } from '@ai-sdk/openai'
  *
  * const { generateText, generateObject } = validated({ maxAttempts: 3 })

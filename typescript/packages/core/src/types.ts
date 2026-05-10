@@ -1,4 +1,4 @@
-// ── Core types for inferred-validation ──
+// ── Core types for reinfer ──
 
 /** The result of a single check evaluation. */
 export interface CheckResult {

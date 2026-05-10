@@ -1,4 +1,4 @@
-# inferred-validation — TypeScript
+# reinfer — TypeScript
 
 Transparent validation layer for LLM inference clients. One line to wrap. Zero lines to change downstream.
 
@@ -13,7 +13,7 @@ bun run build        # tsdown → ESM bundles
 ## Usage
 
 ```typescript
-import { validated } from '@inferred-validation/ai-sdk'
+import { validated } from '@reinfer/ai-sdk'
 import { openai } from '@ai-sdk/openai'
 
 const { generateObject } = validated({
@@ -33,8 +33,8 @@ const result = await generateObject({
 
 | Package | Description |
 |---------|-------------|
-| `@inferred-validation/core` | Validation engine, auto-fix, schemas, retry builders (zero deps) |
-| `@inferred-validation/ai-sdk` | Vercel AI SDK proxy — wraps `generateText()`, `generateObject()` |
+| `@reinfer/core` | Validation engine, auto-fix, schemas, retry builders (zero deps) |
+| `@reinfer/ai-sdk` | Vercel AI SDK proxy — wraps `generateText()`, `generateObject()` |
 
 ## Benchmarks
 

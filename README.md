@@ -1,4 +1,4 @@
-# inferred-validation
+# reinfer
 
 Transparent validation layer for LLM inference clients. One line to wrap. Zero lines to change downstream.
 
@@ -18,15 +18,15 @@ The proxy handles schema validation, auto-fix of malformed JSON, retry with diag
 ## Repo Structure
 
 ```
-inferred-validator/
+reinfer/
 ├── AGENTS.md                   ← Full architecture, edge case maps, roadmap
 ├── README.md
 ├── Provider Matrix — ...md     ← Per-provider edge case research
 ├── SDK Deep Spec — ...md       ← Streaming, tool calls, every weird edge
 │
 ├── typescript/                 ← TS monorepo (Bun + tsdown)
-│   ├── packages/core/          ← @inferred-validation/core (zero deps)
-│   ├── packages/ai-sdk/        ← @inferred-validation/ai-sdk
+│   ├── packages/core/          ← @reinfer/core (zero deps)
+│   ├── packages/ai-sdk/        ← @reinfer/ai-sdk
 │   └── bench/simple/           ← OpenRouter benchmarks (91% pass rate)
 │
 └── python/                     ← Python monorepo (coming soon)
